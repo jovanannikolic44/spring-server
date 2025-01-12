@@ -11,8 +11,12 @@ public class User {
 
     private String name;
     private String surname;
+
+    @Column(nullable = false)
     private String password;
     private String date;
+
+    @Column(nullable = false, unique = true)
     private String email;
     private String phoneNumber;
     private String type;
