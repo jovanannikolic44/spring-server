@@ -16,13 +16,13 @@ class SpringServerApplicationTests {
 	@Test
 	void addUserTest() {
 		User user = new User();
-		user.setUsername("ana123");
-		user.setName("Ana");
-		user.setSurname("Anic");
+		user.setUsername("nenad123");
+		user.setName("Nenad");
+		user.setSurname("Markovic");
 		user.setPassword("123");
 		user.setDate("12-09-1997");
-		user.setEmail("ana@gmail.com");
-		user.setPhoneNumber("0641122333");
+		user.setEmail("nenad@gmail.com");
+		user.setPhoneNumber("0661122333");
 		user.setType("ucenik");
 		userDao.save(user);
 	}
