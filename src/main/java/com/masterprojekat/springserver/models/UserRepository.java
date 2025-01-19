@@ -1,4 +1,4 @@
-package com.masterpojekat.springserver.models;
+package com.masterprojekat.springserver.models;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

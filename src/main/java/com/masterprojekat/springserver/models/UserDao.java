@@ -1,4 +1,4 @@
-package com.masterpojekat.springserver.models;
+package com.masterprojekat.springserver.models;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;

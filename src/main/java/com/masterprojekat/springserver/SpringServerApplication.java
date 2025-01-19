@@ -1,4 +1,4 @@
-package com.masterpojekat.springserver;
+package com.masterprojekat.springserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

@@ -1,4 +1,4 @@
-package com.masterpojekat.springserver.models;
+package com.masterprojekat.springserver.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
