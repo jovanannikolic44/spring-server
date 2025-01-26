@@ -1,5 +1,6 @@
-package com.masterprojekat.springserver.models;
+package com.masterprojekat.springserver.repository;
 
+import com.masterprojekat.springserver.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

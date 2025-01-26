@@ -1,5 +1,7 @@
-package com.masterprojekat.springserver.models;
+package com.masterprojekat.springserver.dao;
 
+import com.masterprojekat.springserver.model.User;
+import com.masterprojekat.springserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;

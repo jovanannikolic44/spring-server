@@ -1,7 +1,7 @@
 package com.masterprojekat.springserver;
 
-import com.masterprojekat.springserver.models.User;
-import com.masterprojekat.springserver.models.UserDao;
+import com.masterprojekat.springserver.model.User;
+import com.masterprojekat.springserver.dao.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
