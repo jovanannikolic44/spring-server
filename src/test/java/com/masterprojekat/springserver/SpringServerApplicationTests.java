@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @SpringBootTest
 class SpringServerApplicationTests {
 
@@ -26,5 +29,18 @@ class SpringServerApplicationTests {
 		user.setType("ucenik");
 		userDao.save(user);
 	}
+
+	@Test
+	public void testFindByEmail() {
+		String phone = "0641122333";
+
+		User user = new User();
+		user.setPhoneNumber(phone);
+
+		boolean result = userDao.checkIfPhoneNumberExists(phone);
+		System.out.println("Result " + result);
+		assertTrue(result);
+	}
+
 
 }

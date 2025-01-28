@@ -5,9 +5,11 @@ import com.masterprojekat.springserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 // Iterable in Java -- investigate
 @Service
@@ -29,5 +31,19 @@ public class UserDao {
 
     public void delete(User user) {
         repository.delete(user);
+    }
+
+    public User getByUsername(String username) {
+        return repository.findById(username).orElse(null);
+    }
+
+    public boolean checkIfEmailExists(String email) {
+        Optional<User> user = repository.findByEmail(email);
+        return user.isPresent();
+    }
+
+    public boolean checkIfPhoneNumberExists(String phoneNumber) {
+        Optional<User> user = repository.findByPhoneNumber(phoneNumber);
+        return user.isPresent();
     }
 }

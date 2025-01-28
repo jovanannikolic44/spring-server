@@ -23,6 +23,8 @@ public class User {
     private String type;
     private String education;
     private String expertise;
+    @Column(nullable = false)
+    private String accountStatus;
 
     public String getName() {
         return name;
@@ -104,19 +106,28 @@ public class User {
         this.expertise = expertise;
     }
 
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "date='" + date + '\'' +
+                "username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", password='" + password + '\'' +
+                ", date='" + date + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", type='" + type + '\'' +
                 ", education='" + education + '\'' +
                 ", expertise='" + expertise + '\'' +
-                ", username='" + username + '\'' +
-                ", surname='" + surname + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
+                ", accountStatus='" + accountStatus + '\'' +
                 '}';
     }
 }
