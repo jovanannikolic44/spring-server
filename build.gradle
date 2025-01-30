@@ -24,7 +24,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
-
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.4.2'
 }
 
 tasks.named('test') {

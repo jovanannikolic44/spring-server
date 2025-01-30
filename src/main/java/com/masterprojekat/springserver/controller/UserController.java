@@ -1,10 +1,9 @@
 package com.masterprojekat.springserver.controller;
 
 import com.masterprojekat.springserver.model.User;
-import com.masterprojekat.springserver.dao.UserDao;
+import com.masterprojekat.springserver.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +15,16 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
     @GetMapping("/user/get-all")
     public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/user/get-by-username")
     public ResponseEntity<User> getUserByUsername(@RequestParam String username) {
-        User user = userDao.getByUsername(username);
+        User user = userService.getByUsername(username);
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
@@ -35,8 +34,8 @@ public class UserController {
 
     @GetMapping("/user/check-email-and-phone-number")
     public ResponseEntity<Map<String, String>> checkEmailAndPhoneNumberUniqueness(@RequestParam String email, @RequestParam String phoneNumber) {
-        boolean emailExists = userDao.checkIfEmailExists(email);
-        boolean phoneExists = userDao.checkIfPhoneNumberExists(phoneNumber);
+        boolean emailExists = userService.checkIfEmailExists(email);
+        boolean phoneExists = userService.checkIfPhoneNumberExists(phoneNumber);
         Map<String, String> response = new HashMap<>();
 
         if (emailExists && phoneExists) {
@@ -58,7 +57,7 @@ public class UserController {
 
     @PostMapping("/user/save")
     public User saveUser(@RequestBody User user) {
-        return userDao.save(user);
+        return userService.save(user);
     }
 
 }
