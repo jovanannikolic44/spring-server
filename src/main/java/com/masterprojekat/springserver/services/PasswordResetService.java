@@ -25,15 +25,15 @@ public class PasswordResetService {
         if(userOptional.isEmpty()) {
             throw new RuntimeException("Korisnik sa email adresom " + toEmail + " ne postoji!");
         }
-        // generate token and save it for current user
         User user = userOptional.get();
         String token = UUID.randomUUID().toString();
         user.setResetToken(token);
         userRepository.save(user);
 
-        String resetLink = "myapp://resetpassword?token=" + token; // Custom URL scheme for the Android app
+        String resetLink = "http://192.168.1.24:9000/resetpassword.html?token=" + token;
         String subject = "Resetovanje lozinke";
-        String body = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body><p>Kliknite na sledeći link kako biste resetovali lozinku: <a href=\"" + resetLink + "\">Resetujte lozinku</a></p></body></html>";
+        String body = "<p>Kliknite na sledeći link kako biste resetovali lozinku: <a href=" + resetLink + ">Resetujte lozinku</a></p>";
+
 
         sendEmail(toEmail, subject, body);
     }
