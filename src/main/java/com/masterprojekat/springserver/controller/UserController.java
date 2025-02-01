@@ -33,26 +33,19 @@ public class UserController {
     }
 
     @GetMapping("/user/check-email-and-phone-number")
-    public ResponseEntity<Map<String, String>> checkEmailAndPhoneNumberUniqueness(@RequestParam String email, @RequestParam String phoneNumber) {
+    public ResponseEntity<String> checkEmailAndPhoneNumberUniqueness(@RequestParam String email, @RequestParam String phoneNumber) {
         boolean emailExists = userService.checkIfEmailExists(email);
         boolean phoneExists = userService.checkIfPhoneNumberExists(phoneNumber);
-        Map<String, String> response = new HashMap<>();
 
         if (emailExists && phoneExists) {
-            response.put("message", "Email i broj telefona su zauzeti.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email i broj telefona su zauzeti.");
+        } else if (emailExists) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email je zauzet.");
+        } else if (phoneExists) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Broj telefona je zauzet.");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body("Email i broj telefona su jedinstveni.");
         }
-        else if (emailExists) {
-            response.put("message", "Email je zauzet.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-        }
-        else if (phoneExists) {
-            response.put("message", "Broj telefona je zauzet.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-        }
-        response.put("status", "ok");
-        response.put("message", "Email i broj telefona su jedinstveni.");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/user/save")
