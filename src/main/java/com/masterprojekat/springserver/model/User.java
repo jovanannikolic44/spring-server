@@ -25,6 +25,7 @@ public class User {
     private String expertise;
     @Column(nullable = false)
     private String accountStatus;
+    private String resetToken;
 
     public String getName() {
         return name;
@@ -114,6 +115,14 @@ public class User {
         this.accountStatus = accountStatus;
     }
 
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -128,6 +137,7 @@ public class User {
                 ", education='" + education + '\'' +
                 ", expertise='" + expertise + '\'' +
                 ", accountStatus='" + accountStatus + '\'' +
+                ", resetToken='" + resetToken + '\'' +
                 '}';
     }
 }
