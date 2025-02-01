@@ -15,12 +15,9 @@ import org.slf4j.LoggerFactory;
 public class PasswordResetController {
     @Autowired
     private PasswordResetService passwordResetService;
-    private static final Logger logger = LoggerFactory.getLogger(PasswordResetController.class);
 
     @PostMapping("/reset-service/request-reset")
     public void requestPasswordReset(@RequestParam String toEmail) {
-        System.out.println("Sending mail");
-        logger.debug("Sending mail");
         passwordResetService.sendPasswordResetEmail(toEmail);
     }
 
