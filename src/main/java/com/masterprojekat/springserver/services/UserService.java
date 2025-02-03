@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-// Iterable in Java -- investigate
+
 @Service
 public class UserService {
-    // Dependency injection mechanism -- investigate
     @Autowired
     private UserRepository repository;
 
@@ -21,7 +20,6 @@ public class UserService {
         return repository.save(user);
     }
 
-    // Guava can be used instead
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         Streamable.of(repository.findAll()).forEach(users::add);
