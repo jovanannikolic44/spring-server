@@ -26,6 +26,8 @@ public class User {
     @Column(nullable = false)
     private String accountStatus;
     private String resetToken;
+    @Column(nullable = false)
+    private boolean firstLogIn;
 
     public String getName() {
         return name;
@@ -123,6 +125,14 @@ public class User {
         this.resetToken = resetToken;
     }
 
+    public boolean isFirstLogIn() {
+        return firstLogIn;
+    }
+
+    public void setFirstLogIn(boolean firstLogIn) {
+        this.firstLogIn = firstLogIn;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -138,6 +148,7 @@ public class User {
                 ", expertise='" + expertise + '\'' +
                 ", accountStatus='" + accountStatus + '\'' +
                 ", resetToken='" + resetToken + '\'' +
+                ", firstLogIn=" + firstLogIn +
                 '}';
     }
 }

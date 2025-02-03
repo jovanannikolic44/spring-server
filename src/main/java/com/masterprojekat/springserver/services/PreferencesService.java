@@ -27,6 +27,10 @@ public class PreferencesService {
         preferences.setUser(user);
         preferences.setSelectedInstruments(selectedInstruments);
         preferencesRepository.save(preferences);
+
+        // update user first login
+        user.setFirstLogIn(false);
+        userRepository.save(user);
     }
 
     public Set<String> getPreferences(String username) {
