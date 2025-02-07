@@ -28,6 +28,7 @@ public class User {
     private String resetToken;
     @Column(nullable = false)
     private boolean firstLogIn;
+    private String profilePicture;
 
     public String getName() {
         return name;
@@ -133,6 +134,14 @@ public class User {
         this.firstLogIn = firstLogIn;
     }
 
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -149,6 +158,7 @@ public class User {
                 ", accountStatus='" + accountStatus + '\'' +
                 ", resetToken='" + resetToken + '\'' +
                 ", firstLogIn=" + firstLogIn +
+                ", profilePicture='" + profilePicture + '\'' +
                 '}';
     }
 }

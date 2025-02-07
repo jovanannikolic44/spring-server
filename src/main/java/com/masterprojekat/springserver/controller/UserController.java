@@ -2,11 +2,19 @@ package com.masterprojekat.springserver.controller;
 
 import com.masterprojekat.springserver.model.User;
 import com.masterprojekat.springserver.services.UserService;
+import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +24,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    private String uploadsPath = "C:\\Users\\Jovana\\Desktop\\Master\\Projects\\spring-server\\uploads\\";
 
     @GetMapping("/user/get-all")
     public List<User> getAllUsers() {
@@ -52,5 +61,46 @@ public class UserController {
     public User saveUser(@RequestBody User user) {
         return userService.save(user);
     }
+
+    @PostMapping("/user/upload-profile-picture")
+    public ResponseEntity<String> uploadProfilePicture(@RequestParam MultipartFile file, @RequestParam String username) {
+        String profilePictureUploadPath = uploadsPath + "profile_pictures";
+        File uploadDir = new File(profilePictureUploadPath);
+        if (!uploadDir.exists()) {
+            if (!uploadDir.mkdirs()) {
+                System.err.println("Greska! Neuspesno kreiranje direktorijuma!");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Greska! Neuspesno kreiranje direktorijuma!");
+            }
+        }
+
+        String fileName = username + "_" + file.getOriginalFilename();
+        File destination = new File(uploadDir, fileName);
+
+        try {
+            file.transferTo(destination);
+            String filePath = "/uploads/profile_pictures/" + fileName;
+            userService.updateProfilePicture(username, filePath);
+            return ResponseEntity.status(HttpStatus.OK).body("Fajl je uspesno sacuvan na serveru!");
+        } catch (IOException e) {
+            System.err.println("Error in upload profile picture controller: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error in file upload.");
+        }
+    }
+
+    @GetMapping("/user/get-profile-picture")
+    public ResponseEntity<Resource> getProfilePicture(@RequestParam String username) {
+        String profilePictureUploadPath = uploadsPath + "profile_pictures";
+        Path filePath = Paths.get(profilePictureUploadPath).resolve(username + "_profile_picture.jpg");
+        try {
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists() && resource.isReadable())
+                return ResponseEntity.status(HttpStatus.OK).body(resource);
+            else
+                return ResponseEntity.notFound().build();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

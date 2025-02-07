@@ -14,33 +14,39 @@ import java.util.Optional;
 @Service
 public class UserService {
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     public User save(User user) {
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        Streamable.of(repository.findAll()).forEach(users::add);
+        Streamable.of(userRepository.findAll()).forEach(users::add);
         return users;
     }
 
     public void delete(User user) {
-        repository.delete(user);
+        userRepository.delete(user);
     }
 
     public User getByUsername(String username) {
-        return repository.findById(username).orElse(null);
+        return userRepository.findById(username).orElse(null);
     }
 
     public boolean checkIfEmailExists(String email) {
-        Optional<User> user = repository.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
         return user.isPresent();
     }
 
     public boolean checkIfPhoneNumberExists(String phoneNumber) {
-        Optional<User> user = repository.findByPhoneNumber(phoneNumber);
+        Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
         return user.isPresent();
+    }
+
+    public void updateProfilePicture(String username, String imagePath) {
+        User user = userRepository.findById(username).orElseThrow(() -> new RuntimeException("Ne postoji korisnik sa korisnickim imenom " + username + "!"));
+        user.setProfilePicture(imagePath);
+        userRepository.save(user);
     }
 }
