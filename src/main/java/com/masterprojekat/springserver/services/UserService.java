@@ -20,6 +20,21 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateInfo(User newUser) {
+        User user = userRepository.findById(newUser.getUsername()).orElseThrow(() -> new RuntimeException("Ne postoji korisnik sa korisnickim imenom " + newUser.getUsername() + "!"));
+        user.setName(newUser.getName());
+        user.setSurname(newUser.getSurname());
+        user.setDate(newUser.getDate());
+        user.setEmail(newUser.getEmail());
+        user.setPhoneNumber(newUser.getPhoneNumber());
+        if("Profesor".equals(newUser.getType())) {
+            user.setEducation(newUser.getEducation());
+            user.setExpertise(newUser.getExpertise());
+        }
+        userRepository.save(user);
+        return user;
+    }
+
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         Streamable.of(userRepository.findAll()).forEach(users::add);

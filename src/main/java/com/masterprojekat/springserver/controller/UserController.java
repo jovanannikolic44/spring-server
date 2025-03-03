@@ -62,6 +62,11 @@ public class UserController {
         return userService.save(user);
     }
 
+    @PostMapping("/user/update-info")
+    public User updateUserInfo(@RequestBody User newUser) {
+        return userService.updateInfo(newUser);
+    }
+
     @PostMapping("/user/upload-profile-picture")
     public ResponseEntity<String> uploadProfilePicture(@RequestParam MultipartFile file, @RequestParam String username) {
         String profilePictureUploadPath = uploadsPath + "profile_pictures";
