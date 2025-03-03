@@ -35,6 +35,13 @@ public class UserService {
         return user;
     }
 
+    public User updatePassword(String username, String newPassword) {
+        User user = userRepository.findById(username).orElseThrow(() -> new RuntimeException("Ne postoji korisnik sa korisnickim imenom " + username + "!"));
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        return user;
+    }
+
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         Streamable.of(userRepository.findAll()).forEach(users::add);
