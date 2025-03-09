@@ -11,7 +11,6 @@ public class Preferences {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int preferencesId;
 
-    // Referencing user
     @OneToOne
     @JoinColumn(name = "username", referencedColumnName = "username", nullable = false, unique = true)
     private User user;
