@@ -31,10 +31,12 @@ public class UserController {
 
     @GetMapping("/user/get-by-username")
     public ResponseEntity<User> getUserByUsername(@RequestParam String username) {
+        System.out.println("Fetching user: " + username);
         User user = userService.getByUsername(username);
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
+            System.out.println("User not found!");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -109,6 +111,4 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
-
-
 }
