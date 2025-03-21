@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface PreferencesRepository extends CrudRepository<Preferences, String> {
+public interface PreferencesRepository extends CrudRepository<Preferences, Integer> {
     Optional<Preferences> findByUser(User user);
 }

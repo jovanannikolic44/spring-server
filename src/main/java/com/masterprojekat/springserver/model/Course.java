@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Courses {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int courseId;
 
     @ManyToOne
-    @JoinColumn(name = "professor_username", referencedColumnName = "username", nullable = false) // FK in Courses table
+    @JoinColumn(name = "professor_username", referencedColumnName = "username", nullable = false)
     private User professor;
 
     private String name;
@@ -20,6 +20,8 @@ public class Courses {
     private String description;
     private int rating;
     private String content;
+    private String courseImage;
+    private float price;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
@@ -94,5 +96,21 @@ public class Courses {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getCourseImage() {
+        return courseImage;
+    }
+
+    public void setCourseImage(String courseImage) {
+        this.courseImage = courseImage;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 }

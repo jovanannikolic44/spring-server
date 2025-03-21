@@ -23,6 +23,4 @@ public class PreferencesController {
         Set<String> instruments = preferencesService.getPreferences(username);
         return ResponseEntity.ok(instruments);
     }
-
-
 }

@@ -10,7 +10,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
-    private Courses course;
+    private Course course;
 
     @ManyToOne
     @JoinColumn(name = "author_username", referencedColumnName = "username", nullable = false)

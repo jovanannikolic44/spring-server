@@ -3,6 +3,7 @@ package com.masterprojekat.springserver.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -29,6 +30,9 @@ public class User {
     @Column(nullable = false)
     private boolean firstLogIn;
     private String profilePicture;
+
+    @OneToOne(mappedBy = "user")
+    private Preferences preferences;
 
     public String getName() {
         return name;
@@ -140,6 +144,14 @@ public class User {
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public Preferences getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(Preferences preferences) {
+        this.preferences = preferences;
     }
 
     @Override

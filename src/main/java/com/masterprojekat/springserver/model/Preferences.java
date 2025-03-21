@@ -1,5 +1,6 @@
 package com.masterprojekat.springserver.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -13,12 +14,16 @@ public class Preferences {
 
     @OneToOne
     @JoinColumn(name = "username", referencedColumnName = "username", nullable = false, unique = true)
+    @JsonIgnore
     private User user;
 
-    @ElementCollection
-    @CollectionTable(name="user_instruments", joinColumns = @JoinColumn(name = "preferencesId"))
-    @Column(name = "instrument_name")
-    private Set<String> selectedInstruments = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "user_instruments",
+            joinColumns = @JoinColumn(name = "preferencesId"),
+            inverseJoinColumns = @JoinColumn(name = "instrument_id")
+    )
+    private Set<Instrument> selectedInstruments;
 
     public User getUser() {
         return user;
@@ -28,11 +33,11 @@ public class Preferences {
         this.user = user;
     }
 
-    public Set<String> getSelectedInstruments() {
+    public Set<Instrument> getSelectedInstruments() {
         return selectedInstruments;
     }
 
-    public void setSelectedInstruments(Set<String> selectedInstruments) {
+    public void setSelectedInstruments(Set<Instrument> selectedInstruments) {
         this.selectedInstruments = selectedInstruments;
     }
 
