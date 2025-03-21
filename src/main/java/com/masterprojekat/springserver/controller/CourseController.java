@@ -6,16 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class CourseController {
@@ -52,5 +50,23 @@ public class CourseController {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/course/by-preference")
+    public ResponseEntity<List<Course>> getCoursesByPreference(@RequestBody Set<String> preferences) {
+        List<Course> courses = courseService.getByPreferences(preferences);
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/course/best-rated")
+    public ResponseEntity<List<Course>> getBestRatedCourses() {
+        List<Course> courses = courseService.getFiveBestRatedCourses();
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/course/cheapest")
+    public ResponseEntity<List<Course>> getCheapestCourses() {
+        List<Course> courses = courseService.getFiveCheapestCourses();
+        return ResponseEntity.ok(courses);
     }
 }
