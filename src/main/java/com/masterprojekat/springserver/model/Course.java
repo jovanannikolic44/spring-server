@@ -13,15 +13,16 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "professor_username", referencedColumnName = "username", nullable = false)
     private User professor;
-
     private String name;
     private String level;
     private String instrument;
     private String description;
     private int rating;
-    private String content;
     private String courseImage;
     private float price;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CourseContent> content;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
@@ -80,14 +81,6 @@ public class Course {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public List<Comment> getComments() {
