@@ -2,6 +2,7 @@ package com.masterprojekat.springserver.model;
 
 import jakarta.persistence.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -21,10 +22,10 @@ public class Course {
     private String courseImage;
     private float price;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CourseContent> content;
+    @Column(columnDefinition = "TEXT")
+    private String content;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     public User getProfessor() {
@@ -105,5 +106,13 @@ public class Course {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

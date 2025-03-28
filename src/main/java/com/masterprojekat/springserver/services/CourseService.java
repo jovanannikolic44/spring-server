@@ -40,5 +40,4 @@ public class CourseService {
         Pageable pageable = PageRequest.of(0,5);
         return courseRepository.findFiveCoursesByOrderByPriceDesc(pageable);
     }
-
 }
