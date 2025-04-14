@@ -1,6 +1,8 @@
 package com.masterprojekat.springserver.services;
 
+import com.masterprojekat.springserver.model.Course;
 import com.masterprojekat.springserver.model.User;
+import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
@@ -15,6 +17,8 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CourseRepository courseRepository;
 
     public User save(User user) {
         return userRepository.save(user);
@@ -71,4 +75,36 @@ public class UserService {
         user.setProfilePicture(imagePath);
         userRepository.save(user);
     }
+
+    public void purchaseCourse(String username, int courseId) {
+        User user = userRepository.findById(username).orElseThrow();
+        Course course = courseRepository.findById(courseId).orElseThrow();
+        user.addPurchasedCourse(course);
+        userRepository.save(user);
+    }
+
+    public List<Course> getPurchasedCourses(String username) {
+        User user = userRepository.findById(username).orElseThrow();
+        return user.getPurchasedCourses();
+    }
+
+    public void addCourseToCart(String username, int courseId) {
+        User user = userRepository.findById(username).orElseThrow();
+        Course course = courseRepository.findById(courseId).orElseThrow();
+        user.addCartCourse(course);
+        userRepository.save(user);
+    }
+
+    public List<Course> getCoursesFromCart(String username) {
+        User user = userRepository.findById(username).orElseThrow();
+        return user.getCartCourses();
+    }
+
+    public void removeCoursesFromCart(String username, List<Integer> idsToBeRemoved) {
+        User user = userRepository.findById(username).orElseThrow();
+        List<Course> coursesToRemove = courseRepository.findAllById(idsToBeRemoved);
+        user.getCartCourses().removeAll(coursesToRemove);
+        userRepository.save(user);
+    }
+
 }

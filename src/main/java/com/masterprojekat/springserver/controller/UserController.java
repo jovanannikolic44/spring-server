@@ -1,5 +1,6 @@
 package com.masterprojekat.springserver.controller;
 
+import com.masterprojekat.springserver.model.Course;
 import com.masterprojekat.springserver.model.User;
 import com.masterprojekat.springserver.services.UserService;
 import org.springframework.core.io.Resource;
@@ -108,5 +109,43 @@ public class UserController {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/user/purchase-course")
+    public ResponseEntity<String> purchaseCourse(@RequestParam String username, @RequestParam int courseId) {
+        userService.purchaseCourse(username, courseId);
+        return ResponseEntity.ok("Kurs je uspesno kupljen!");
+    }
+
+    @GetMapping("/user/get-purchased-courses")
+    public ResponseEntity<List<Course>> getPurchasedCourses(@RequestParam String username) {
+        List<Course> purchasedCourses = userService.getPurchasedCourses(username);
+        if(purchasedCourses != null) {
+            return ResponseEntity.ok(purchasedCourses );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping("/user/add-to-cart-course")
+    public ResponseEntity<String> addCourseToCart(@RequestParam String username, @RequestParam int courseId) {
+        userService.addCourseToCart(username, courseId);
+        return ResponseEntity.ok("Kurs je uspesno dodat u korpu!");
+    }
+
+    @GetMapping("/user/get-courses-from-cart")
+    public ResponseEntity<List<Course>> getCoursesFromCart(@RequestParam String username) {
+        List<Course> coursesFromCart = userService.getCoursesFromCart(username);
+        if(coursesFromCart != null) {
+            return ResponseEntity.ok(coursesFromCart );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @DeleteMapping("/users/{username}/cart")
+    public ResponseEntity<?> removeCoursesFromCart(@PathVariable String username, @RequestBody List<Integer> courseIds) {
+        userService.removeCoursesFromCart(username, courseIds);
+        return ResponseEntity.ok().build();
     }
 }
