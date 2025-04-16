@@ -1,5 +1,6 @@
 package com.masterprojekat.springserver.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class User {
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
+    @JsonIgnore
     private List<Course> purchasedCourses = new ArrayList<>();
 
     @ManyToMany
@@ -48,6 +50,7 @@ public class User {
             joinColumns = @JoinColumn(name = "username"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
+    @JsonIgnore
     private List<Course> cartCourses = new ArrayList<>();
 
     public String getName() {
