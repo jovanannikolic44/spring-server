@@ -30,7 +30,7 @@ public class PasswordResetService {
         user.setResetToken(token);
         userRepository.save(user);
 
-        String resetLink = "http://192.168.100.135:9000/resetpassword.html?token=" + token;
+        String resetLink = "http://192.168.0.23:9000/resetpassword.html?token=" + token;
         String subject = "Resetovanje lozinke";
         String body = "<p>Kliknite na sledeći link kako biste resetovali lozinku: <a href=" + resetLink + ">Resetujte lozinku</a></p>";
 

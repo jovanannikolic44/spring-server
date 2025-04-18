@@ -22,6 +22,7 @@ public class Course {
     private int rating;
     private String courseImage;
     private float price;
+    private int progress;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -115,5 +116,13 @@ public class Course {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 }
