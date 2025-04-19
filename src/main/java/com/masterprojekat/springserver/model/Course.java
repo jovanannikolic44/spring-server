@@ -30,6 +30,7 @@ public class Course {
     private String content;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Comment> comments;
 
     public User getProfessor() {

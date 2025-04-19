@@ -42,4 +42,12 @@ public class Comment {
     public void setText(String text) {
         this.text = text;
     }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }
