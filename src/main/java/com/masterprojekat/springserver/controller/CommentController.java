@@ -13,8 +13,8 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping("/comments/add-comment")
-    public ResponseEntity<Void> addComment(@RequestBody Comment comment) {
+    @PostMapping("/comments/save-comment")
+    public ResponseEntity<Void> saveComment(@RequestBody Comment comment) {
         commentService.addComment(comment);
         return ResponseEntity.ok().build();
     }
