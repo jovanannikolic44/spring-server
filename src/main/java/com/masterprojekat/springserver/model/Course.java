@@ -25,6 +25,7 @@ public class Course {
     private String courseImage;
     private float price;
     private int progress;
+    private int numberOfClasses;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -143,5 +144,13 @@ public class Course {
 
     public void setNumberOfRatings(float numberOfRatings) {
         this.numberOfRatings = numberOfRatings;
+    }
+
+    public int getNumberOfClasses() {
+        return numberOfClasses;
+    }
+
+    public void setNumberOfClasses(int numberOfClasses) {
+        this.numberOfClasses = numberOfClasses;
     }
 }
