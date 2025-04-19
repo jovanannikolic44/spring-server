@@ -17,17 +17,17 @@ public class TermController {
     public ResponseEntity<String> createNewTerm(@RequestBody Term term) {
         String message = "";
         message = termService.createNewTerm(term);
-        if(!"".equals(message)) {
+        if(!"Termin je uspesno dodat!".equals(message)) {
             return ResponseEntity.badRequest().body(message);
         }
         return ResponseEntity.ok(message);
     }
 
     @PostMapping("/term/reserve")
-    public ResponseEntity<String> requestTerm(@RequestParam int termId, @RequestParam String studentUsername) {
+    public ResponseEntity<String> requestTerm(@RequestParam int termId, @RequestParam String studentUsername, @RequestParam int courseId) {
         String message = "";
-        message = termService.requestTerm(termId, studentUsername);
-        if(!"".equals(message)) {
+        message = termService.requestTerm(termId, studentUsername, courseId);
+        if(!"Zahtev sa rezervaciju termina je uspesno poslat!".equals(message)) {
             return ResponseEntity.badRequest().body(message);
         }
         return ResponseEntity.ok(message);
@@ -37,7 +37,7 @@ public class TermController {
     public ResponseEntity<String> acceptTerm(@RequestParam int termId) {
         String message = "";
         message = termService.acceptTerm(termId);
-        if(!"".equals(message)) {
+        if(!"Termin prihvacen!".equals(message)) {
             return ResponseEntity.badRequest().body(message);
         }
         return ResponseEntity.ok(message);
@@ -47,7 +47,7 @@ public class TermController {
     public ResponseEntity<String> rejectTerm(@RequestParam int termId) {
         String message = "";
         message = termService.rejectTerm(termId);
-        if(!"".equals(message)) {
+        if(!"Termin odbijen!".equals(message)) {
             return ResponseEntity.badRequest().body(message);
         }
         return ResponseEntity.ok(message);

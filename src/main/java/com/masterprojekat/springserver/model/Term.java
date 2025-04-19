@@ -22,6 +22,10 @@ public class Term {
     @JoinColumn(name = "student_username")
     private User student;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     @Enumerated(EnumType.STRING)
     private TermStatus status;
 
@@ -71,5 +75,13 @@ public class Term {
 
     public void setStatus(TermStatus status) {
         this.status = status;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }

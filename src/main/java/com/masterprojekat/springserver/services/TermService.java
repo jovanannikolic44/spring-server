@@ -1,8 +1,10 @@
 package com.masterprojekat.springserver.services;
 
+import com.masterprojekat.springserver.model.Course;
 import com.masterprojekat.springserver.model.Term;
 import com.masterprojekat.springserver.model.TermStatus;
 import com.masterprojekat.springserver.model.User;
+import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.TermRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ public class TermService {
     private TermRepository termRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CourseRepository courseRepository;
 
     public String createNewTerm(Term term) {
         User professor = userRepository.findById(term.getProfessor().getUsername()).orElseThrow();
@@ -41,9 +45,11 @@ public class TermService {
         return "Termin je uspesno dodat!";
     }
 
-    public String requestTerm(int termId, String studentUsername) {
+    public String requestTerm(int termId, String studentUsername, int courseId) {
         Term requestedTerm = termRepository.findById(termId).orElseThrow();
         User student = userRepository.findById(studentUsername).orElseThrow();
+        Course course = courseRepository.findById(courseId).orElseThrow();
+
         if (!"Ucenik".equalsIgnoreCase(student.getType())) {
             return "Korisnik nije student!";
         }
@@ -56,8 +62,9 @@ public class TermService {
         }
         requestedTerm.setStatus(TermStatus.ZAHTEV_POSLAT);
         requestedTerm.setStudent(student);
+        requestedTerm.setCourse(course);
         termRepository.save(requestedTerm);
-        return "Zahtev sa rezervaciju termina je uspesnp poslat!";
+        return "Zahtev sa rezervaciju termina je uspesno poslat!";
     }
 
     public String acceptTerm(int termId) {
