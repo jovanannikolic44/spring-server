@@ -1,7 +1,9 @@
 package com.masterprojekat.springserver.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -13,17 +15,23 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "professor_username", referencedColumnName = "username", nullable = false)
     private User professor;
-
     private String name;
     private String level;
     private String instrument;
     private String description;
-    private int rating;
-    private String content;
+    private float rating;
+    private float totalSumRatings;
+    private float numberOfRatings;
     private String courseImage;
     private float price;
+    private int progress;
+    private int numberOfClasses;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Comment> comments;
 
     public User getProfessor() {
@@ -74,20 +82,12 @@ public class Course {
         this.description = description;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public List<Comment> getComments() {
@@ -112,5 +112,45 @@ public class Course {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    public float getTotalSumRatings() {
+        return totalSumRatings;
+    }
+
+    public void setTotalSumRatings(float totalSumRatings) {
+        this.totalSumRatings = totalSumRatings;
+    }
+
+    public float getNumberOfRatings() {
+        return numberOfRatings;
+    }
+
+    public void setNumberOfRatings(float numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
+    }
+
+    public int getNumberOfClasses() {
+        return numberOfClasses;
+    }
+
+    public void setNumberOfClasses(int numberOfClasses) {
+        this.numberOfClasses = numberOfClasses;
     }
 }

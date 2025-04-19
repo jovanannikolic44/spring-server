@@ -1,9 +1,10 @@
 package com.masterprojekat.springserver.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -33,6 +34,24 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Preferences preferences;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_purchased_courses",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    @JsonIgnore
+    private List<Course> purchasedCourses = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_cart_courses",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    @JsonIgnore
+    private List<Course> cartCourses = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -152,6 +171,34 @@ public class User {
 
     public void setPreferences(Preferences preferences) {
         this.preferences = preferences;
+    }
+
+    public List<Course> getPurchasedCourses() {
+        return purchasedCourses;
+    }
+
+    public void setPurchasedCourses(List<Course> purchasedCourses) {
+        this.purchasedCourses = purchasedCourses;
+    }
+
+    public void addPurchasedCourse(Course course) {
+        if (!purchasedCourses.contains(course)) {
+            this.purchasedCourses.add(course);
+        }
+    }
+
+    public List<Course> getCartCourses() {
+        return cartCourses;
+    }
+
+    public void setCartCourses(List<Course> cartCourses) {
+        this.cartCourses = cartCourses;
+    }
+
+    public void addCartCourse(Course course) {
+        if (!cartCourses.contains(course)) {
+            this.cartCourses.add(course);
+        }
     }
 
     @Override

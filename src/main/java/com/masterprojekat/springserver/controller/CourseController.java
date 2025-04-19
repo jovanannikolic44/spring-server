@@ -69,4 +69,16 @@ public class CourseController {
         List<Course> courses = courseService.getFiveCheapestCourses();
         return ResponseEntity.ok(courses);
     }
+
+    @PostMapping("/course/save-rating")
+    public ResponseEntity<Void> saveCourseRating(@RequestParam int courseId, float rating) {
+        courseService.saveRating(courseId, rating);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/course/get-rating")
+    public ResponseEntity<Float> getCourseRating(@RequestParam int courseId) {
+        float rating = courseService.getRating(courseId);
+        return ResponseEntity.ok(rating);
+    }
 }
