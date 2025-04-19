@@ -40,4 +40,22 @@ public class CourseService {
         Pageable pageable = PageRequest.of(0,5);
         return courseRepository.findFiveCoursesByOrderByPriceDesc(pageable);
     }
+
+    public void saveRating(int courseId, float rating) {
+        Course course = courseRepository.findById(courseId).orElseThrow();
+        float totalSumRatings = course.getTotalSumRatings();
+        float numberOfRatings = course.getNumberOfRatings();
+        totalSumRatings += rating;
+        numberOfRatings++;
+        float newRating = totalSumRatings / numberOfRatings;
+        course.setRating(newRating);
+        course.setTotalSumRatings(totalSumRatings);
+        course.setNumberOfRatings(numberOfRatings);
+        courseRepository.save(course);
+    }
+
+    public float getRating(int courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow();
+        return course.getRating();
+    }
 }

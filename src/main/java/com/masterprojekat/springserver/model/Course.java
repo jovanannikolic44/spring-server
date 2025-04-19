@@ -19,7 +19,9 @@ public class Course {
     private String level;
     private String instrument;
     private String description;
-    private int rating;
+    private float rating;
+    private float totalSumRatings;
+    private float numberOfRatings;
     private String courseImage;
     private float price;
     private int progress;
@@ -78,11 +80,11 @@ public class Course {
         this.description = description;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
@@ -124,5 +126,21 @@ public class Course {
 
     public void setProgress(int progress) {
         this.progress = progress;
+    }
+
+    public float getTotalSumRatings() {
+        return totalSumRatings;
+    }
+
+    public void setTotalSumRatings(float totalSumRatings) {
+        this.totalSumRatings = totalSumRatings;
+    }
+
+    public float getNumberOfRatings() {
+        return numberOfRatings;
+    }
+
+    public void setNumberOfRatings(float numberOfRatings) {
+        this.numberOfRatings = numberOfRatings;
     }
 }
