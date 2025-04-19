@@ -148,4 +148,10 @@ public class UserController {
         userService.removeCoursesFromCart(username, courseIds);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/user/is-course-purchased")
+    public ResponseEntity<Boolean> isCoursePurchased(@RequestParam String username, @RequestParam int courseId) {
+        boolean isPurchased = userService.isCoursePurchased(username, courseId);
+        return ResponseEntity.ok(isPurchased);
+    }
 }

@@ -107,4 +107,13 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public boolean isCoursePurchased(String username, int courseId) {
+        User user = userRepository.findById(username).orElseThrow();
+        for(Course course : user.getPurchasedCourses()) {
+            if(course.getCourseId() == courseId)
+                return true;
+        }
+        return false;
+    }
+
 }
