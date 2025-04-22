@@ -16,6 +16,14 @@ public class Notification {
     @JoinColumn(name = "student_username")
     private User student;
 
+    @ManyToOne
+    @JoinColumn(name = "professor_username")
+    private User professor;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     public int getNotificationId() {
         return notificationId;
     }
@@ -46,5 +54,21 @@ public class Notification {
 
     public void setStudent(User student) {
         this.student = student;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public User getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(User professor) {
+        this.professor = professor;
     }
 }
