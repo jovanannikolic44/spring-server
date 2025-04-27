@@ -14,4 +14,5 @@ public interface TermRepository extends JpaRepository<Term, Integer> {
     boolean existsByProfessorAndDateAndTimeAndStatusIn(User professor, LocalDate date, LocalTime time, List<TermStatus> statuses);
     List<Term> findByProfessorAndStatus(User professor, TermStatus status);
     List<Term> findByStudentAndStatus(User student, TermStatus status);
+    List<Term> findByStudentAndDateAndStatus(User student, LocalDate date, TermStatus status);
 }
