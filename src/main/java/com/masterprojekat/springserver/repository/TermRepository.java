@@ -15,4 +15,5 @@ public interface TermRepository extends JpaRepository<Term, Integer> {
     List<Term> findByProfessorAndStatus(User professor, TermStatus status);
     List<Term> findByStudentAndStatus(User student, TermStatus status);
     List<Term> findByStudentAndDateAndStatus(User student, LocalDate date, TermStatus status);
+    List<Term> findByProfessorAndDateAndStatus(User professor, LocalDate date, TermStatus status);
 }

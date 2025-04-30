@@ -125,10 +125,13 @@ public class TermService {
         return termRepository.findByStudentAndStatus(student, TermStatus.PRIHVACEN);
     }
 
-    public List<Term> getTermsByDate(String studentUsername, String date) throws DateTimeParseException{
-        User student = userRepository.findById(studentUsername).orElseThrow((() -> new EntityNotFoundException("Student sa korisnickim imenom " + studentUsername + " nije pronadjen u bazi!")));
+    public List<Term> getTermsByDate(String username, String type, String date) throws DateTimeParseException{
+        User user = userRepository.findById(username).orElseThrow((() -> new EntityNotFoundException("Korisnik sa korisnickim imenom " + username + " nije pronadjen u bazi!")));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
-        return termRepository.findByStudentAndDateAndStatus(student, localDate, TermStatus.PRIHVACEN);
+        if (type.equalsIgnoreCase("Ucenik")) {
+            return termRepository.findByStudentAndDateAndStatus(user, localDate, TermStatus.PRIHVACEN);
+        }
+        return termRepository.findByProfessorAndDateAndStatus(user, localDate, TermStatus.PRIHVACEN);
     }
 }

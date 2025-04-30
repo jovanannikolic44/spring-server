@@ -80,9 +80,9 @@ public class TermController {
     }
 
     @GetMapping("/term/get-terms-by-date")
-    public ResponseEntity<?> getTermsByDate(@RequestParam String studentUsername, @RequestParam String inputDate) {
+    public ResponseEntity<?> getTermsByDate(@RequestParam String username, @RequestParam String type, @RequestParam String inputDate) {
         try {
-            List<Term> termsList = termService.getTermsByDate(studentUsername, inputDate);
+            List<Term> termsList = termService.getTermsByDate(username, type, inputDate);
             return ResponseEntity.ok(termsList);
         } catch (DateTimeParseException e) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
