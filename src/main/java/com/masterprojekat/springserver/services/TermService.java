@@ -7,9 +7,13 @@ import com.masterprojekat.springserver.model.User;
 import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.TermRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Service
@@ -22,7 +26,7 @@ public class TermService {
     private CourseRepository courseRepository;
 
     public String createNewTerm(Term term) {
-        User professor = userRepository.findById(term.getProfessor().getUsername()).orElseThrow();
+        User professor = userRepository.findById(term.getProfessor().getUsername()).orElseThrow((() -> new EntityNotFoundException("Profesor sa korisnickim imenom " + term.getProfessor().getUsername() + " nije pronadjen u bazi!")));
         if (!"Profesor".equalsIgnoreCase(professor.getType())) {
             return "Korisnik nije profesor!";
         }
@@ -46,9 +50,9 @@ public class TermService {
     }
 
     public String requestTerm(int termId, String studentUsername, int courseId) {
-        Term requestedTerm = termRepository.findById(termId).orElseThrow();
-        User student = userRepository.findById(studentUsername).orElseThrow();
-        Course course = courseRepository.findById(courseId).orElseThrow();
+        Term requestedTerm = termRepository.findById(termId).orElseThrow((() -> new EntityNotFoundException("Termin sa identifikatorom " + termId + " nije pronadjen u bazi!")));
+        User student = userRepository.findById(studentUsername).orElseThrow((() -> new EntityNotFoundException("Student sa korisnickim imenom " + studentUsername + " nije pronadjen u bazi!")));
+        Course course = courseRepository.findById(courseId).orElseThrow((() -> new EntityNotFoundException("Kurs sa identifikatorom " + courseId + " nije pronadjen u bazi!")));
 
         if (!"Ucenik".equalsIgnoreCase(student.getType())) {
             return "Korisnik nije student!";
@@ -68,7 +72,7 @@ public class TermService {
     }
 
     public String acceptTerm(int termId) {
-        Term term = termRepository.findById(termId).orElseThrow();
+        Term term = termRepository.findById(termId).orElseThrow((() -> new EntityNotFoundException("Termin sa identifikatorom " + termId + " nije pronadjen u bazi!")));
         if(term.getStatus() != TermStatus.ZAHTEV_POSLAT) {
             return "Status termina nije validan!";
         }
@@ -85,7 +89,7 @@ public class TermService {
     }
 
     public String rejectTerm(int termId) {
-        Term term = termRepository.findById(termId).orElseThrow();
+        Term term = termRepository.findById(termId).orElseThrow((() -> new EntityNotFoundException("Termin sa identifikatorom " + termId + " nije pronadjen u bazi!")));
         if(term.getStatus() != TermStatus.ZAHTEV_POSLAT) {
             return "Status termina nije validan!";
         }
@@ -102,22 +106,29 @@ public class TermService {
     }
 
     public List<Term> getAllAvailableTermsForProfessor(String professorUsername) {
-        User professor = userRepository.findById(professorUsername).orElseThrow();
+        User professor = userRepository.findById(professorUsername).orElseThrow((() -> new EntityNotFoundException("Profesor sa korisnickim imenom " + professorUsername + " nije pronadjen u bazi!")));
         return termRepository.findByProfessorAndStatus(professor, TermStatus.SLOBODAN);
     }
 
     public List<Term> getAllRequestedTermsForProfessor(String professorUsername) {
-        User professor = userRepository.findById(professorUsername).orElseThrow();
+        User professor = userRepository.findById(professorUsername).orElseThrow((() -> new EntityNotFoundException("Profesor sa korisnickim imenom " + professorUsername + " nije pronadjen u bazi!")));
         return termRepository.findByProfessorAndStatus(professor, TermStatus.ZAHTEV_POSLAT);
     }
 
     public List<Term> getAllConfirmedTermsForProfessor(String professorUsername) {
-        User professor = userRepository.findById(professorUsername).orElseThrow();
+        User professor = userRepository.findById(professorUsername).orElseThrow((() -> new EntityNotFoundException("Profesor sa korisnickim imenom " + professorUsername + " nije pronadjen u bazi!")));
         return termRepository.findByProfessorAndStatus(professor, TermStatus.PRIHVACEN);
     }
 
     public List<Term> getAllConfirmedTermsForStudent(String studentUsername) {
-        User student = userRepository.findById(studentUsername).orElseThrow();
+        User student = userRepository.findById(studentUsername).orElseThrow((() -> new EntityNotFoundException("Student sa korisnickim imenom " + studentUsername + " nije pronadjen u bazi!")));
         return termRepository.findByStudentAndStatus(student, TermStatus.PRIHVACEN);
+    }
+
+    public List<Term> getTermsByDate(String studentUsername, String date) throws DateTimeParseException{
+        User student = userRepository.findById(studentUsername).orElseThrow((() -> new EntityNotFoundException("Student sa korisnickim imenom " + studentUsername + " nije pronadjen u bazi!")));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        return termRepository.findByStudentAndDateAndStatus(student, localDate, TermStatus.PRIHVACEN);
     }
 }
