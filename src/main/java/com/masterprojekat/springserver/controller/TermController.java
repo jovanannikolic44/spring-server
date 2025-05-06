@@ -1,6 +1,7 @@
 package com.masterprojekat.springserver.controller;
 
 import com.masterprojekat.springserver.model.Term;
+import com.masterprojekat.springserver.model.TermStatus;
 import com.masterprojekat.springserver.services.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -80,9 +81,9 @@ public class TermController {
     }
 
     @GetMapping("/term/get-terms-by-date")
-    public ResponseEntity<?> getTermsByDate(@RequestParam String username, @RequestParam String type, @RequestParam String inputDate) {
+    public ResponseEntity<?> getTermsByDate(@RequestParam String username, @RequestParam String type, @RequestParam String inputDate, @RequestParam TermStatus termStatus) {
         try {
-            List<Term> termsList = termService.getTermsByDate(username, type, inputDate);
+            List<Term> termsList = termService.getTermsByDate(username, type, inputDate, termStatus);
             return ResponseEntity.ok(termsList);
         } catch (DateTimeParseException e) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));

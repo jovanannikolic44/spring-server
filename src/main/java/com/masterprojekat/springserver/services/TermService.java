@@ -129,26 +129,21 @@ public class TermService {
         return termRepository.findByStudentAndStatus(student, TermStatus.PRIHVACEN);
     }
 
-    public List<Term> getTermsByDate(String username, String type, String date) throws DateTimeParseException{
+    public List<Term> getTermsByDate(String username, String type, String date, TermStatus termStatus) throws DateTimeParseException{
         User user = userRepository.findById(username).orElseThrow((() -> new EntityNotFoundException("Korisnik sa korisnickim imenom " + username + " nije pronadjen u bazi!")));
-        System.out.println("USER " + user.getUsername());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
         if (type.equalsIgnoreCase("Ucenik")) {
-            return termRepository.findByStudentAndDateAndStatus(user, localDate, TermStatus.PRIHVACEN);
+            return termRepository.findByStudentAndDateAndStatus(user, localDate, termStatus);
         }
-        return termRepository.findByProfessorAndDateAndStatus(user, localDate, TermStatus.PRIHVACEN);
+        return termRepository.findByProfessorAndDateAndStatus(user, localDate, termStatus);
     }
 
     public String generateUniqueChannelName() {
         String channelName = "channel-" + UUID.randomUUID().toString();
-
-        // Check if the name already exists in the database
         while (isChannelNameExists(channelName)) {
-            // If the name exists, generate a new one
             channelName = "channel-" + UUID.randomUUID().toString();
         }
-
         return channelName;
     }
 
