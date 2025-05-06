@@ -131,6 +131,7 @@ public class TermService {
 
     public List<Term> getTermsByDate(String username, String type, String date) throws DateTimeParseException{
         User user = userRepository.findById(username).orElseThrow((() -> new EntityNotFoundException("Korisnik sa korisnickim imenom " + username + " nije pronadjen u bazi!")));
+        System.out.println("USER " + user.getUsername());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
         if (type.equalsIgnoreCase("Ucenik")) {
