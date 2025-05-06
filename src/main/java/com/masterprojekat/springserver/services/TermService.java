@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TermService {
@@ -42,6 +43,9 @@ public class TermService {
         if(termWithSameProfessorDateAndTimeExists) {
             return "Termin vec postoji ili je zauzet!";
         }
+
+        String uniqueChannelName = generateUniqueChannelName();
+        term.setChannel(uniqueChannelName);
         term.setProfessor(professor);
         term.setStatus(TermStatus.SLOBODAN);
         term.setStudent(null);
@@ -133,5 +137,27 @@ public class TermService {
             return termRepository.findByStudentAndDateAndStatus(user, localDate, TermStatus.PRIHVACEN);
         }
         return termRepository.findByProfessorAndDateAndStatus(user, localDate, TermStatus.PRIHVACEN);
+    }
+
+    public String generateUniqueChannelName() {
+        String channelName = "channel-" + UUID.randomUUID().toString();
+
+        // Check if the name already exists in the database
+        while (isChannelNameExists(channelName)) {
+            // If the name exists, generate a new one
+            channelName = "channel-" + UUID.randomUUID().toString();
+        }
+
+        return channelName;
+    }
+
+    public boolean isChannelNameExists(String channelName) {
+        Term term = termRepository.findByChannel(channelName);
+        return term != null;
+    }
+
+    public String getChannelName(int termId) {
+        Term term = termRepository.findById(termId).orElseThrow((() -> new EntityNotFoundException("Termin (termId=" + termId + ") nije pronadjen u bazi!")));
+        return term.getChannel();
     }
 }

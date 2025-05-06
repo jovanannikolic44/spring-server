@@ -29,6 +29,8 @@ public class Term {
     @Enumerated(EnumType.STRING)
     private TermStatus status;
 
+    private String channel;
+
     public int getTermId() {
         return termId;
     }
@@ -83,5 +85,13 @@ public class Term {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }

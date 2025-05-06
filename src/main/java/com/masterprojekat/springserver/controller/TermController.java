@@ -88,4 +88,10 @@ public class TermController {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
         }
     }
+
+    @GetMapping("/term/get-channel-name")
+    public ResponseEntity<String> getChannelName(@RequestParam int termId) {
+        String channelName = termService.getChannelName(termId);
+        return ResponseEntity.ok(channelName);
+    }
 }
