@@ -4,5 +4,7 @@ public enum TermStatus {
     SLOBODAN,
     ZAHTEV_POSLAT,
     PRIHVACEN,
-    ODBIJEN
+    ODBIJEN,
+    NIJE_ODRZAN,
+    ODRZAN
 }
