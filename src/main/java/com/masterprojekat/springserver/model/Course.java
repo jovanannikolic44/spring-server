@@ -24,7 +24,6 @@ public class Course {
     private float numberOfRatings;
     private String courseImage;
     private float price;
-    private int progress;
     private int numberOfClasses;
 
     @Column(columnDefinition = "TEXT")
@@ -120,14 +119,6 @@ public class Course {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
-
-    public void setProgress(int progress) {
-        this.progress = progress;
     }
 
     public float getTotalSumRatings() {

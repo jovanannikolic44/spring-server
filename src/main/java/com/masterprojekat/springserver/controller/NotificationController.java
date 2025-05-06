@@ -1,6 +1,5 @@
 package com.masterprojekat.springserver.controller;
 
-import com.masterprojekat.springserver.model.Course;
 import com.masterprojekat.springserver.model.Notification;
 import com.masterprojekat.springserver.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,9 @@
 package com.masterprojekat.springserver.services;
 
 import com.masterprojekat.springserver.model.Course;
+import com.masterprojekat.springserver.model.CourseProgress;
 import com.masterprojekat.springserver.model.User;
+import com.masterprojekat.springserver.repository.CourseProgressRepository;
 import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private CourseProgressRepository courseProgressRepository;
+
 
     public User save(User user) {
         return userRepository.save(user);
@@ -79,8 +84,20 @@ public class UserService {
     public void purchaseCourse(String username, int courseId) {
         User user = userRepository.findById(username).orElseThrow();
         Course course = courseRepository.findById(courseId).orElseThrow();
+
+        if (user.getPurchasedCourses().contains(course)) {
+            throw new IllegalStateException("Kurs je vec kupljen!");
+        }
+
         user.addPurchasedCourse(course);
         userRepository.save(user);
+
+        CourseProgress courseProgress = new CourseProgress();
+        courseProgress.setUser(user);
+        courseProgress.setCourse(course);
+        courseProgress.setProgress(0);
+
+        courseProgressRepository.save(courseProgress);
     }
 
     public List<Course> getPurchasedCourses(String username) {
