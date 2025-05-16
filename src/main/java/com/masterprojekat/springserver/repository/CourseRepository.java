@@ -1,6 +1,7 @@
 package com.masterprojekat.springserver.repository;
 
 import com.masterprojekat.springserver.model.Course;
+import com.masterprojekat.springserver.model.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     List<Course> findFiveCoursesByOrderByRatingDesc(Pageable pageable);
     @Query("SELECT course FROM Course course ORDER BY course.price ASC")
     List<Course> findFiveCoursesByOrderByPriceDesc(Pageable pageable);
+
+    List<Course> findByProfessor(User professor);
 }

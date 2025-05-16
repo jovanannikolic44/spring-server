@@ -81,4 +81,13 @@ public class CourseController {
         float rating = courseService.getRating(courseId);
         return ResponseEntity.ok(rating);
     }
+
+    @GetMapping("/course/professors/{professorUsername}")
+    public ResponseEntity<List<Course>> getAllCoursesByProfessor(@PathVariable String professorUsername) {
+        List<Course> allCourses = courseService.getAllProfessorsCourses(professorUsername);
+        if(allCourses == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(allCourses);
+    }
 }

@@ -1,7 +1,9 @@
 package com.masterprojekat.springserver.services;
 
 import com.masterprojekat.springserver.model.Course;
+import com.masterprojekat.springserver.model.User;
 import com.masterprojekat.springserver.repository.CourseRepository;
+import com.masterprojekat.springserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,8 @@ import java.util.Set;
 public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Course> getAllCourses() {
         List<Course> users = new ArrayList<>();
@@ -57,5 +61,10 @@ public class CourseService {
     public float getRating(int courseId) {
         Course course = courseRepository.findById(courseId).orElseThrow();
         return course.getRating();
+    }
+
+    public List<Course> getAllProfessorsCourses(String professorUsername) {
+        User professor = userRepository.findById(professorUsername).orElseThrow();
+        return courseRepository.findByProfessor(professor);
     }
 }
