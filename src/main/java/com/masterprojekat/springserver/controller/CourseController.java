@@ -90,4 +90,9 @@ public class CourseController {
         }
         return ResponseEntity.ok(allCourses);
     }
+
+    @PostMapping("/course/add-new")
+    public Course addNewCourse(@RequestBody Course newCourse) {
+        return courseService.saveCourse(newCourse);
+    }
 }

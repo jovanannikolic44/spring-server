@@ -20,16 +20,23 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(unique = true)
     private String phoneNumber;
+
     private String type;
     private String education;
     private String expertise;
+
     @Column(nullable = false)
-    private String accountStatus;
+    @Enumerated(EnumType.STRING)
+    private UserAccountStatus accountStatus;
+
     private String resetToken;
+
     @Column(nullable = false)
     private boolean firstLogIn;
+
     private String profilePicture;
 
     @OneToOne(mappedBy = "user")
@@ -133,11 +140,11 @@ public class User {
         this.expertise = expertise;
     }
 
-    public String getAccountStatus() {
+    public UserAccountStatus getAccountStatus() {
         return accountStatus;
     }
 
-    public void setAccountStatus(String accountStatus) {
+    public void setAccountStatus(UserAccountStatus accountStatus) {
         this.accountStatus = accountStatus;
     }
 

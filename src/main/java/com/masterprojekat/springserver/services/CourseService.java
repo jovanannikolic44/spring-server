@@ -1,6 +1,7 @@
 package com.masterprojekat.springserver.services;
 
 import com.masterprojekat.springserver.model.Course;
+import com.masterprojekat.springserver.model.CourseStatus;
 import com.masterprojekat.springserver.model.User;
 import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
@@ -66,5 +67,10 @@ public class CourseService {
     public List<Course> getAllProfessorsCourses(String professorUsername) {
         User professor = userRepository.findById(professorUsername).orElseThrow();
         return courseRepository.findByProfessor(professor);
+    }
+
+    public Course saveCourse(Course newCourse) {
+        newCourse.setStatus(CourseStatus.ZAHTEV_POSLAT);
+        return courseRepository.save(newCourse);
     }
 }

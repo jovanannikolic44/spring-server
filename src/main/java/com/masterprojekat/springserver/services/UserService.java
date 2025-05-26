@@ -3,6 +3,7 @@ package com.masterprojekat.springserver.services;
 import com.masterprojekat.springserver.model.Course;
 import com.masterprojekat.springserver.model.CourseProgress;
 import com.masterprojekat.springserver.model.User;
+import com.masterprojekat.springserver.model.UserAccountStatus;
 import com.masterprojekat.springserver.repository.CourseProgressRepository;
 import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
@@ -26,6 +27,7 @@ public class UserService {
 
 
     public User save(User user) {
+        user.setAccountStatus(UserAccountStatus.NIJE_AKTIVAN);
         return userRepository.save(user);
     }
 
