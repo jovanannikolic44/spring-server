@@ -125,4 +125,17 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Greska pri cuvanju slike kursa.");
         }
     }
+
+    @PutMapping("/course/update-info")
+    public ResponseEntity<Course> updateCourseInfo(@RequestBody Course course) {
+        try {
+            Course updatedCourse = courseService.updateCourse(course);
+            if (updatedCourse == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(updatedCourse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

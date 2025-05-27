@@ -28,8 +28,8 @@ public class NotificationController {
     }
 
     @PostMapping("/notification/create-new-notification")
-    public ResponseEntity<Void> createNewNotification(@RequestParam int termId) {
-        notificationService.createNewNotification(termId);
+    public ResponseEntity<Void> createNewNotification(@RequestParam int termId, @RequestParam String acceptOrRejectMessage) {
+        notificationService.createNewNotification(termId, acceptOrRejectMessage);
         return ResponseEntity.ok().build();
     }
 

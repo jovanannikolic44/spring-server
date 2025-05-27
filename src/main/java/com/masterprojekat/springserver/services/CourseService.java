@@ -90,4 +90,16 @@ public class CourseService {
         course.setStatus(CourseStatus.ZAHTEV_POSLAT);
         courseRepository.save(course);
     }
+
+    public Course updateCourse(Course newCourse) {
+        Course course = courseRepository.findById(newCourse.getCourseId()).orElseThrow();
+        course.setName(newCourse.getName());
+        course.setPrice(newCourse.getPrice());
+        course.setNumberOfClasses(newCourse.getNumberOfClasses());
+        course.setDescription(newCourse.getDescription());
+        course.setContent(newCourse.getContent());
+        course.setLevel(newCourse.getLevel());
+        courseRepository.save(course);
+        return course;
+    }
 }

@@ -25,15 +25,15 @@ public class NotificationService {
         return notificationRepository.findByStudentUsernameOrderByCreatedAtDesc(username);
     }
 
-    public void createNewNotification(int termId) {
+    public void createNewNotification(int termId, String acceptOrRejectMessage) {
         Term term = termRepository.findById(termId).orElseThrow();
         User student = term.getStudent();
         User professor = term.getProfessor();
         Course course = term.getCourse();
 
-        String message = "Profesor " + professor.getName() +
-                " je potvrdio rezervaciju za cas " + course.getName() +
-                " za datum " + term.getDate() + " u " + term.getTime() + ".";
+        String message = "Rezervacija za kurs " + course.getName() + " je " + acceptOrRejectMessage +
+                "od strane profesora " + professor.getName() + " za datum " + term.getDate() +
+                " i vreme " + term.getTime() + ".";
 
         Notification notification = new Notification();
         notification.setStudent(student);
