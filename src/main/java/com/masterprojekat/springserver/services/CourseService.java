@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +23,7 @@ public class CourseService {
     private CourseRepository courseRepository;
     @Autowired
     private UserRepository userRepository;
+    private String uploadsPath = "C:\\Users\\Jovana\\Desktop\\Master\\Projects\\spring-server\\uploads\\";
 
     public List<Course> getAllCourses() {
         List<Course> users = new ArrayList<>();
@@ -66,11 +69,25 @@ public class CourseService {
 
     public List<Course> getAllProfessorsCourses(String professorUsername) {
         User professor = userRepository.findById(professorUsername).orElseThrow();
-        return courseRepository.findByProfessor(professor);
+        return courseRepository.findByProfessorAndStatus(professor, CourseStatus.PRIHVACEN);
     }
 
-    public Course saveCourse(Course newCourse) {
-        newCourse.setStatus(CourseStatus.ZAHTEV_POSLAT);
-        return courseRepository.save(newCourse);
+    public void saveCourseWithImage(String name, float price, String professorUsername, String level,
+                                    String instrument, String description, String content,
+                                    int numberOfClasses, String imagePath) {
+
+        User professor = userRepository.findById(professorUsername).orElseThrow();
+        Course course = new Course();
+        course.setName(name);
+        course.setPrice(price);
+        course.setProfessor(professor);
+        course.setLevel(level);
+        course.setInstrument(instrument);
+        course.setDescription(description);
+        course.setContent(content);
+        course.setNumberOfClasses(numberOfClasses);
+        course.setCourseImage(imagePath);
+        course.setStatus(CourseStatus.ZAHTEV_POSLAT);
+        courseRepository.save(course);
     }
 }

@@ -8,7 +8,10 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -92,7 +95,34 @@ public class CourseController {
     }
 
     @PostMapping("/course/add-new")
-    public Course addNewCourse(@RequestBody Course newCourse) {
-        return courseService.saveCourse(newCourse);
+    public ResponseEntity<?> addCourse(@RequestParam("name") String name, @RequestParam("price") float price,
+                                       @RequestParam("professorUsername") String professorUsername,
+                                       @RequestParam("level") String level, @RequestParam("instrument") String instrument,
+                                       @RequestParam("description") String description, @RequestParam("content") String content,
+                                       @RequestParam("numberOfClasses") int numberOfClasses, @RequestParam("image") MultipartFile image
+    ) {
+        String imageUploadPath = uploadsPath + "courses_pictures";
+        File uploadDir = new File(imageUploadPath);
+
+        if (!uploadDir.exists() && !uploadDir.mkdirs()) {
+            System.err.println("Greska! Neuspesno kreiranje direktorijuma!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Greska! Neuspesno kreiranje direktorijuma!");
+        }
+
+
+        String fileName = "course_" + System.currentTimeMillis() + image.getOriginalFilename();
+        File destination = new File(uploadDir, fileName);
+
+        try {
+            image.transferTo(destination);
+            String imagePath = "/uploads/course_pictures/" + fileName;
+            courseService.saveCourseWithImage(name, price, professorUsername, level, instrument,
+                    description, content, numberOfClasses, imagePath);
+
+            return ResponseEntity.ok().body("Kurs je uspesno dodat.");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Greska pri cuvanju slike kursa.");
+        }
     }
 }
