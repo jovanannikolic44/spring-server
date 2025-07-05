@@ -1,6 +1,5 @@
 package com.masterprojekat.springserver.controller;
 
-import com.masterprojekat.springserver.model.Course;
 import com.masterprojekat.springserver.model.Notification;
 import com.masterprojekat.springserver.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,8 @@ public class NotificationController {
     }
 
     @PostMapping("/notification/create-new-notification")
-    public ResponseEntity<Void> createNewNotification(@RequestParam int termId) {
-        notificationService.createNewNotification(termId);
+    public ResponseEntity<Void> createNewNotification(@RequestParam int termId, @RequestParam String acceptOrRejectMessage) {
+        notificationService.createNewNotification(termId, acceptOrRejectMessage);
         return ResponseEntity.ok().build();
     }
 

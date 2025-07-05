@@ -24,8 +24,10 @@ public class Course {
     private float numberOfRatings;
     private String courseImage;
     private float price;
-    private int progress;
     private int numberOfClasses;
+
+    @Enumerated(EnumType.STRING)
+    private CourseStatus status;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -122,14 +124,6 @@ public class Course {
         this.content = content;
     }
 
-    public int getProgress() {
-        return progress;
-    }
-
-    public void setProgress(int progress) {
-        this.progress = progress;
-    }
-
     public float getTotalSumRatings() {
         return totalSumRatings;
     }
@@ -152,5 +146,13 @@ public class Course {
 
     public void setNumberOfClasses(int numberOfClasses) {
         this.numberOfClasses = numberOfClasses;
+    }
+
+    public CourseStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CourseStatus status) {
+        this.status = status;
     }
 }

@@ -1,10 +1,7 @@
 package com.masterprojekat.springserver.model;
 
-public enum TermStatus {
-    SLOBODAN,
+public enum CourseStatus {
     ZAHTEV_POSLAT,
     PRIHVACEN,
-    ODBIJEN,
-    NIJE_ODRZAN,
-    ODRZAN
+    ODBIJEN
 }

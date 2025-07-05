@@ -8,13 +8,16 @@ import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.TermRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TermService {
@@ -42,6 +45,9 @@ public class TermService {
         if(termWithSameProfessorDateAndTimeExists) {
             return "Termin vec postoji ili je zauzet!";
         }
+
+        String uniqueChannelName = generateUniqueChannelName();
+        term.setChannel(uniqueChannelName);
         term.setProfessor(professor);
         term.setStatus(TermStatus.SLOBODAN);
         term.setStudent(null);
@@ -107,7 +113,7 @@ public class TermService {
 
     public List<Term> getAllAvailableTermsForProfessor(String professorUsername) {
         User professor = userRepository.findById(professorUsername).orElseThrow((() -> new EntityNotFoundException("Profesor sa korisnickim imenom " + professorUsername + " nije pronadjen u bazi!")));
-        return termRepository.findByProfessorAndStatus(professor, TermStatus.SLOBODAN);
+        return termRepository.findByProfessorAndStatusAndDateGreaterThanEqual(professor, TermStatus.SLOBODAN, LocalDate.now());
     }
 
     public List<Term> getAllRequestedTermsForProfessor(String professorUsername) {
@@ -125,10 +131,38 @@ public class TermService {
         return termRepository.findByStudentAndStatus(student, TermStatus.PRIHVACEN);
     }
 
-    public List<Term> getTermsByDate(String studentUsername, String date) throws DateTimeParseException{
-        User student = userRepository.findById(studentUsername).orElseThrow((() -> new EntityNotFoundException("Student sa korisnickim imenom " + studentUsername + " nije pronadjen u bazi!")));
+    public List<Term> getTermsByDate(String username, String type, String date, TermStatus termStatus) throws DateTimeParseException{
+        User user = userRepository.findById(username).orElseThrow((() -> new EntityNotFoundException("Korisnik sa korisnickim imenom " + username + " nije pronadjen u bazi!")));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
-        return termRepository.findByStudentAndDateAndStatus(student, localDate, TermStatus.PRIHVACEN);
+        if (type.equalsIgnoreCase("Ucenik")) {
+            return termRepository.findByStudentAndDateAndStatus(user, localDate, termStatus);
+        }
+        return termRepository.findByProfessorAndDateAndStatus(user, localDate, termStatus);
+    }
+
+    public String generateUniqueChannelName() {
+        String channelName = "channel-" + UUID.randomUUID().toString();
+        while (isChannelNameExists(channelName)) {
+            channelName = "channel-" + UUID.randomUUID().toString();
+        }
+        return channelName;
+    }
+
+    public boolean isChannelNameExists(String channelName) {
+        Term term = termRepository.findByChannel(channelName);
+        return term != null;
+    }
+
+    public String getChannelName(int termId) {
+        Term term = termRepository.findById(termId).orElseThrow((() -> new EntityNotFoundException("Termin (termId=" + termId + ") nije pronadjen u bazi!")));
+        return term.getChannel();
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * ?") // Every day at midnight
+    public void autoUpdateMissedTerms() {
+        LocalDate today = LocalDate.now();
+        termRepository.updateMissedTerms(today);
     }
 }
