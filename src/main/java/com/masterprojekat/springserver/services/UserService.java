@@ -1,12 +1,10 @@
 package com.masterprojekat.springserver.services;
 
-import com.masterprojekat.springserver.model.Course;
-import com.masterprojekat.springserver.model.CourseProgress;
-import com.masterprojekat.springserver.model.User;
-import com.masterprojekat.springserver.model.UserAccountStatus;
+import com.masterprojekat.springserver.model.*;
 import com.masterprojekat.springserver.repository.CourseProgressRepository;
 import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -133,5 +131,29 @@ public class UserService {
                 return true;
         }
         return false;
+    }
+
+    public List<User> getUserAccountRequests() {
+        return userRepository.findByAccountStatus(UserAccountStatus.NIJE_AKTIVAN);
+    }
+
+    public String acceptRequest(String username) {
+        User user = userRepository.findById(username).orElseThrow((() -> new EntityNotFoundException("Korisnik sa korisnickim imenom " + username + " nije pronadjen u bazi!")));
+        if(user.getAccountStatus() != UserAccountStatus.NIJE_AKTIVAN) {
+            return "Status korisnickog naloga nije validan!";
+        }
+        user.setAccountStatus(UserAccountStatus.AKTIVAN);
+        userRepository.save(user);
+        return "Nalog je aktiviran!";
+    }
+
+    public String declineRequest(String username) {
+        User user = userRepository.findById(username).orElseThrow((() -> new EntityNotFoundException("Korisnik sa korisnickim imenom " + username + " nije pronadjen u bazi!")));
+        if(user.getAccountStatus() != UserAccountStatus.NIJE_AKTIVAN) {
+            return "Status korisnickog naloga nije validan!";
+        }
+        user.setAccountStatus(UserAccountStatus.ODBIJENA_AKTIVACIJA);
+        userRepository.save(user);
+        return "Aktivacija naloga je odbijena!";
     }
 }

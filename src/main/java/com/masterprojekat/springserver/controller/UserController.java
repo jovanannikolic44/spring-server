@@ -154,4 +154,34 @@ public class UserController {
         boolean isPurchased = userService.isCoursePurchased(username, courseId);
         return ResponseEntity.ok(isPurchased);
     }
+
+    @GetMapping("/user/user-account-requests")
+    public ResponseEntity<List<User>> getUserAccountRequests() {
+        List<User> userAccountRequests = userService.getUserAccountRequests();
+        if(userAccountRequests != null) {
+            return ResponseEntity.ok(userAccountRequests );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping("/user/acceptRequest")
+    public ResponseEntity<String> acceptRequest(@RequestParam String username) {
+        String message = "";
+        message = userService.acceptRequest(username);
+        if(!"Nalog je aktiviran!".equals(message)) {
+            return ResponseEntity.badRequest().body(message);
+        }
+        return ResponseEntity.ok(message);
+    }
+
+    @PostMapping("/user/declineRequest")
+    public ResponseEntity<String> declineRequest(@RequestParam String username) {
+        String message = "";
+        message = userService.declineRequest(username);
+        if(!"Aktivacija naloga je odbijena!".equals(message)) {
+            return ResponseEntity.badRequest().body(message);
+        }
+        return ResponseEntity.ok(message);
+    }
 }
