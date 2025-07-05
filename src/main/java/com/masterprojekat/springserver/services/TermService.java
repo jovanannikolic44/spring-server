@@ -8,7 +8,9 @@ import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.TermRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -111,7 +113,7 @@ public class TermService {
 
     public List<Term> getAllAvailableTermsForProfessor(String professorUsername) {
         User professor = userRepository.findById(professorUsername).orElseThrow((() -> new EntityNotFoundException("Profesor sa korisnickim imenom " + professorUsername + " nije pronadjen u bazi!")));
-        return termRepository.findByProfessorAndStatus(professor, TermStatus.SLOBODAN);
+        return termRepository.findByProfessorAndStatusAndDateGreaterThanEqual(professor, TermStatus.SLOBODAN, LocalDate.now());
     }
 
     public List<Term> getAllRequestedTermsForProfessor(String professorUsername) {
@@ -155,5 +157,12 @@ public class TermService {
     public String getChannelName(int termId) {
         Term term = termRepository.findById(termId).orElseThrow((() -> new EntityNotFoundException("Termin (termId=" + termId + ") nije pronadjen u bazi!")));
         return term.getChannel();
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * ?") // Every day at midnight
+    public void autoUpdateMissedTerms() {
+        LocalDate today = LocalDate.now();
+        termRepository.updateMissedTerms(today);
     }
 }

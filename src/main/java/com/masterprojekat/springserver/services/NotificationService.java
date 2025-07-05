@@ -31,8 +31,8 @@ public class NotificationService {
         User professor = term.getProfessor();
         Course course = term.getCourse();
 
-        String message = "Rezervacija za kurs " + course.getName() + " je " + acceptOrRejectMessage +
-                "od strane profesora " + professor.getName() + " za datum " + term.getDate() +
+        String message = "Profesor/ka " + professor.getName() + " " + professor.getSurname() + " je " +
+                acceptOrRejectMessage + " rezervaciju za kurs " + course.getName() + " za datum " + term.getDate() +
                 " i vreme " + term.getTime() + ".";
 
         Notification notification = new Notification();
