@@ -3,8 +3,10 @@ package com.masterprojekat.springserver.services;
 import com.masterprojekat.springserver.model.Course;
 import com.masterprojekat.springserver.model.CourseStatus;
 import com.masterprojekat.springserver.model.User;
+import com.masterprojekat.springserver.model.UserAccountStatus;
 import com.masterprojekat.springserver.repository.CourseRepository;
 import com.masterprojekat.springserver.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -101,5 +103,29 @@ public class CourseService {
         course.setLevel(newCourse.getLevel());
         courseRepository.save(course);
         return course;
+    }
+
+    public List<Course> getNewCourseRequests() {
+        return courseRepository.findByStatus(CourseStatus.ZAHTEV_POSLAT);
+    }
+
+    public String acceptRequest(int courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow((() -> new EntityNotFoundException("Kurs sa id brojem " + courseId + " nije pronadjen u bazi!")));
+        if(course.getStatus() != CourseStatus.ZAHTEV_POSLAT) {
+            return "Status pri dodavanju novog kursa nije validan!";
+        }
+        course.setStatus(CourseStatus.PRIHVACEN);
+        courseRepository.save(course);
+        return "Dodavanje kursa je odobreno!";
+    }
+
+    public String declineRequest(int courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow((() -> new EntityNotFoundException("Kurs sa id brojem " + courseId + " nije pronadjen u bazi!")));
+        if(course.getStatus() != CourseStatus.ZAHTEV_POSLAT) {
+            return "Status pri dodavanju novog kursa nije validan!";
+        }
+        course.setStatus(CourseStatus.ODBIJEN);
+        courseRepository.save(course);
+        return "Dodavanje kurseva je odbijeno!";
     }
 }
