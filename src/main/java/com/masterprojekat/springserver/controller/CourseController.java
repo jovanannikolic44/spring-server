@@ -1,6 +1,7 @@
 package com.masterprojekat.springserver.controller;
 
 import com.masterprojekat.springserver.model.Course;
+import com.masterprojekat.springserver.model.User;
 import com.masterprojekat.springserver.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -137,5 +138,35 @@ public class CourseController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/course/new-course-requests")
+    public ResponseEntity<List<Course>> getNewCourseRequests() {
+        List<Course> newCourseRequests = courseService.getNewCourseRequests();
+        if(newCourseRequests != null) {
+            return ResponseEntity.ok(newCourseRequests );
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping("/course/accept-request")
+    public ResponseEntity<String> acceptRequest(@RequestParam int courseId) {
+        String message = "";
+        message = courseService.acceptRequest(courseId);
+        if(!"Dodavanje kursa je odobreno!".equals(message)) {
+            return ResponseEntity.badRequest().body(message);
+        }
+        return ResponseEntity.ok(message);
+    }
+
+    @PostMapping("/course/decline-request")
+    public ResponseEntity<String> declineRequest(@RequestParam int courseId) {
+        String message = "";
+        message = courseService.declineRequest(courseId);
+        if(!"Dodavanje kurseva je odbijeno!".equals(message)) {
+            return ResponseEntity.badRequest().body(message);
+        }
+        return ResponseEntity.ok(message);
     }
 }

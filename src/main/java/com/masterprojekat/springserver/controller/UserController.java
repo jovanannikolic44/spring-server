@@ -165,7 +165,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/acceptRequest")
+    @PostMapping("/user/accept-request")
     public ResponseEntity<String> acceptRequest(@RequestParam String username) {
         String message = "";
         message = userService.acceptRequest(username);
@@ -175,7 +175,7 @@ public class UserController {
         return ResponseEntity.ok(message);
     }
 
-    @PostMapping("/user/declineRequest")
+    @PostMapping("/user/decline-request")
     public ResponseEntity<String> declineRequest(@RequestParam String username) {
         String message = "";
         message = userService.declineRequest(username);

@@ -3,6 +3,7 @@ package com.masterprojekat.springserver.repository;
 import com.masterprojekat.springserver.model.Course;
 import com.masterprojekat.springserver.model.CourseStatus;
 import com.masterprojekat.springserver.model.User;
+import com.masterprojekat.springserver.model.UserAccountStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,4 +31,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     List<Course> findFiveCoursesByOrderByPriceDesc(Pageable pageable);
 
     List<Course> findByProfessorAndStatus(User professor, CourseStatus status);
+    List<Course> findByStatus(CourseStatus status);
 }
